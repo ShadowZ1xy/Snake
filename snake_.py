@@ -30,13 +30,13 @@ class Snake_class:
       global grid_show
       global gamemode_change
       key = pygame.key.get_pressed()
-      if key[pygame.K_UP] and self.x[-1] >= 0 and self.x[-1] < screen_width and self.last_move != 2:
+      if key[pygame.K_UP] or key[pygame.K_w] and self.x[-1] >= 0 and self.x[-1] < screen_width and self.last_move != 2:
          self.last_move = 1
-      if key[pygame.K_DOWN] and self.x[-1] >= 0 and self.x[-1] < screen_width and self.last_move != 1:
+      if key[pygame.K_DOWN] or key[pygame.K_s] and self.x[-1] >= 0 and self.x[-1] < screen_width and self.last_move != 1:
          self.last_move = 2
-      if key[pygame.K_LEFT] and self.y[-1] >= 0 and self.y[-1] < screen_height and self.last_move != 4 and self.last_move != None:
+      if key[pygame.K_LEFT] or key[pygame.K_a] and self.y[-1] >= 0 and self.y[-1] < screen_height and self.last_move != 4 and self.last_move != None:
          self.last_move = 3
-      if key[pygame.K_RIGHT] and self.y[-1] >= 0 and self.y[-1] < screen_height and self.last_move != 3:
+      if key[pygame.K_RIGHT] or key[pygame.K_d] and self.y[-1] >= 0 and self.y[-1] < screen_height and self.last_move != 3:
          self.last_move = 4
       if key[pygame.K_g]:
          if grid_show != True:
