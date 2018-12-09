@@ -48,7 +48,7 @@ class Snake_class:
       if key[pygame.K_h]:
          grid_show = False
 
-
+      #game mod change mechanics
       if key[pygame.K_n] and self.last_move == None:
          gamemode_change = False
       if key[pygame.K_m] and self.last_move == None:
@@ -79,8 +79,7 @@ class Snake_class:
                self.y.append(self.y[-1])
             self.y.pop(0)
             self.x.pop(0)
-
-      #game mod change mechanics
+            
       if gamemode_change == False: 
          if self.x[-1] == screen_width + self.size:
             self.x[-1] = 0
