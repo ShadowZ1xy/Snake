@@ -26,50 +26,57 @@ class Snake_class:
       self.last_move = None
       self.frame_permove = 6 #Start speed (bigger = slower)
 
-   def move(self):
+   def keypress(self):
       global grid_show
       global gamemode_change
       key = pygame.key.get_pressed()
-      if key[pygame.K_UP] or key[pygame.K_w] and self.x[-1] >= 0 and self.x[-1] < screen_width and self.last_move != 2:
-         self.last_move = 1
-      if key[pygame.K_DOWN] or key[pygame.K_s] and self.x[-1] >= 0 and self.x[-1] < screen_width and self.last_move != 1:
-         self.last_move = 2
-      if key[pygame.K_LEFT] or key[pygame.K_a] and self.y[-1] >= 0 and self.y[-1] < screen_height and self.last_move != 4 and self.last_move != None:
-         self.last_move = 3
-      if key[pygame.K_RIGHT] or key[pygame.K_d] and self.y[-1] >= 0 and self.y[-1] < screen_height and self.last_move != 3:
-         self.last_move = 4
+      if self.last_move != 2:
+         if key[pygame.K_UP] or key[pygame.K_w] and self.x[-1] >= 0 and self.x[-1] < screen_width:
+            self.last_move = 1
+      if self.last_move != 1:
+         if key[pygame.K_DOWN] or key[pygame.K_s] and self.x[-1] >= 0 and self.x[-1] < screen_width:
+            self.last_move = 2
+      if self.last_move != 4 and self.last_move != None:
+         if key[pygame.K_LEFT] or key[pygame.K_a] and self.y[-1] >= 0 and self.y[-1] < screen_height:
+            self.last_move = 3
+      if self.last_move != 3:
+         if key[pygame.K_RIGHT] or key[pygame.K_d] and self.y[-1] >= 0 and self.y[-1] < screen_height:
+            self.last_move = 4
+
       if key[pygame.K_g]:
-         if grid_show != True:
-            grid_show = True
-         else:
-            grid_show = False
+         grid_show = True
+      if key[pygame.K_h]:
+         grid_show = False
 
 
+      if key[pygame.K_n] and self.last_move == None:
+         gamemode_change = False
       if key[pygame.K_m] and self.last_move == None:
          gamemode_change = True
 
-      if self.last_move == 1:
+      # Changing snake speed
+      if key[pygame.K_1]:self.frame_permove = 1 #fastest
+      if key[pygame.K_2]:self.frame_permove = 2
+      if key[pygame.K_3]:self.frame_permove = 5
+      if key[pygame.K_4]:self.frame_permove = 6
+      if key[pygame.K_5]:self.frame_permove = 10 #slowest
+
+
+   def move(self):
+      if self.last_move != None:
          if frame_count % self.frame_permove == 0:
-            self.y.append(self.y[-1] - self.size)
-            self.x.append(self.x[-1])
-            self.x.pop(0)
-            self.y.pop(0)
-      elif self.last_move == 2:
-         if frame_count % self.frame_permove == 0:
-            self.y.append(self.y[-1] + self.size)
-            self.x.append(self.x[-1])
-            self.x.pop(0)
-            self.y.pop(0)
-      elif self.last_move == 3:
-         if frame_count % self.frame_permove == 0:
-            self.x.append(self.x[-1] - self.size)
-            self.y.append(self.y[-1])
-            self.y.pop(0)
-            self.x.pop(0)
-      elif self.last_move == 4:
-         if frame_count % self.frame_permove == 0:
-            self.x.append(self.x[-1] + self.size)
-            self.y.append(self.y[-1])
+            if self.last_move == 1:
+               self.y.append(self.y[-1] - self.size)
+               self.x.append(self.x[-1])
+            elif self.last_move == 2:
+               self.y.append(self.y[-1] + self.size)
+               self.x.append(self.x[-1])
+            elif self.last_move == 3:
+               self.x.append(self.x[-1] - self.size)
+               self.y.append(self.y[-1])
+            elif self.last_move == 4:
+               self.x.append(self.x[-1] + self.size)
+               self.y.append(self.y[-1])
             self.y.pop(0)
             self.x.pop(0)
 
@@ -77,11 +84,12 @@ class Snake_class:
       if gamemode_change == False: 
          if self.x[-1] == screen_width + self.size:
             self.x[-1] = 0
-         elif self.x[-1] < 0:
+         if self.x[-1] < 0:
             self.x[-1] = screen_width
+
          if self.y[-1] == screen_height + self.size:
             self.y[-1] = 0
-         elif self.y[-1] < 0:
+         if self.y[-1] < 0:
             self.y[-1] = screen_height
       else:
          if self.x[-1] == screen_width + self.size:
@@ -94,17 +102,7 @@ class Snake_class:
             self.restart(True)
 
 
-      # Changing snake speed
-      if key[pygame.K_1]:
-         self.frame_permove = 1 #fastest
-      if key[pygame.K_2]:
-         self.frame_permove = 2
-      if key[pygame.K_3]:
-         self.frame_permove = 5
-      if key[pygame.K_4]:
-         self.frame_permove = 6
-      if key[pygame.K_5]:
-         self.frame_permove = 10 #slowest
+      
 
 
    def check_end(self): #check snake destroy himself
@@ -153,8 +151,8 @@ class Food_class:
          while self.x in Snake.x and self.y in Snake.y: #if food spawn in snake body, respawn it
             self.change_location()
 
-         Snake.x.insert(0,Snake.x[1]) # add snake length
-         Snake.y.insert(0,Snake.y[1]) # add snake length
+         Snake.x.insert(0,Snake.x[0]) # add snake length
+         Snake.y.insert(0,Snake.y[0]) # add snake length
       pygame.draw.rect(canvas, self.color,
         (self.x, self.y, self.size, self.size))
 
@@ -191,16 +189,16 @@ class Interface:
    def game_mode_border(self):
       global gamemode_change
       if gamemode_change == True:
-         pygame.draw.line(canvas, self.border_color, # top game mod border
+         pygame.draw.line(canvas, self.border_color, # top border
             (0, 0),
             (0, screen_height), self.border_with)
-         pygame.draw.line(canvas, self.border_color, # left game mod border
+         pygame.draw.line(canvas, self.border_color, # left border
             (0, 0),
             (screen_width, 0), self.border_with)
-         pygame.draw.line(canvas, self.border_color, # right game mod border
+         pygame.draw.line(canvas, self.border_color, # right border
             (screen_width-2, 0),
             (screen_width-2, screen_height), self.border_with)
-         pygame.draw.line(canvas, self.border_color, # bottom game mod border
+         pygame.draw.line(canvas, self.border_color, # bottom border
             (0, screen_height-2),
             (screen_width, screen_height-2), self.border_with)
 
@@ -236,7 +234,7 @@ while run:
       if event.type == pygame.QUIT:
          run = False
 
-
+   Snake.keypress()
    Snake.move()
    Snake.restart(Snake.check_end())
    screen_update()
