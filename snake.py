@@ -35,17 +35,14 @@ class Snake(object):
             if self.last_move != 2:
                 if key[up] and self.x[-1] >= 0 and self.x[-1] < screen_width:
                     self.last_move = 1
-
         if (key[pygame.K_DOWN] == 1 and key[pygame.K_UP] == 0 and key[pygame.K_LEFT] == 0 and key[pygame.K_RIGHT] == 0) or (key[pygame.K_s] == 1 and key[pygame.K_w] == 0 and key[pygame.K_a] == 0 and key[pygame.K_d] == 0):
             if self.last_move != 1:
                 if key[down] and self.x[-1] >= 0 and self.x[-1] < screen_width:
                     self.last_move = 2
-
         if (key[pygame.K_DOWN] == 0 and key[pygame.K_UP] == 0 and key[pygame.K_LEFT] == 1 and key[pygame.K_RIGHT] == 0) or (key[pygame.K_s] == 0 and key[pygame.K_w] == 0 and key[pygame.K_a] == 1 and key[pygame.K_d] == 0):
             if self.last_move != 4 and self.last_move != None:
                 if key[left] and self.y[-1] >= 0 and self.y[-1] < screen_height:
                     self.last_move = 3
-
         if (key[pygame.K_DOWN] == 0 and key[pygame.K_UP] == 0 and key[pygame.K_LEFT] == 0 and key[pygame.K_RIGHT] == 1) or (key[pygame.K_s] == 0 and key[pygame.K_w] == 0 and key[pygame.K_a] == 0 and key[pygame.K_d] == 1):
             if self.last_move != 3:
                 if key[right] and self.y[-1] >= 0 and self.y[-1] < screen_height:
@@ -57,7 +54,6 @@ class Snake(object):
         if key[pygame.K_3]:self.frame_permove = 5
         if key[pygame.K_4]:self.frame_permove = 6
         if key[pygame.K_5]:self.frame_permove = 10 #slowest
-
 
     def move(self):
         global reload_var
@@ -115,10 +111,8 @@ class Snake(object):
         for i in range(len(self.x)-1):
             pygame.draw.rect(canvas, self.bc, 
                 (self.x[i]+1, self.y[i]+1, self.size-2, self.size-2))
-
         pygame.draw.rect(canvas, self.hc,
                 (self.x[-1], self.y[-1], self.size, self.size))
-
 
 
 class Food(object):
@@ -148,14 +142,12 @@ class Food(object):
                 self.change_location()
             Player2.x.insert(0,Player2.x[0]) # add snake length
             Player2.y.insert(0,Player2.y[0]) # add snake length
-
         pygame.draw.rect(canvas, self.color,
             (self.x, self.y, self.size, self.size))
 
     def change_location(self):
         self.x = randint(1, (screen_width / 10 / 2 - 1)) * self.size #Food random position X
         self.y = randint(2, (screen_height / 10 / 2 - 1)) * self.size #Food random position Y
-
 
 
 class Interface(object):
@@ -228,20 +220,17 @@ class Interface(object):
         if key[pygame.K_h]:
             grid_show = False
 
-
         if Player1.last_move == None and Player2.last_move == None:
             if key[pygame.K_n]:
                 gamemode_change = False
             if key[pygame.K_m]:
                 gamemode_change = True
             if key[pygame.K_r]:
-                Food1.change_location()
-                Food2.change_location()
+                reload_var = True
             if key[pygame.K_i]:
                 player_add = True
             if key[pygame.K_o]:
                 player_add = False
-
 
     def game_mode_border(self):
         global gamemode_change
@@ -258,17 +247,12 @@ class Interface(object):
             pygame.draw.line(canvas, self.border_color, # bottom border
                 (0, screen_height-2),
                 (screen_width, screen_height-2), self.border_with)
-     
-
-
 
 
 Player1 = Snake(40, 60, 20, (255,50,50), (50,255,50))
 Player2 = Snake(40, 100, 20, (50,50,255), (255,50,50))
-
 Food1 = Food(20, (255, 140, 0))
 Food2 = Food(20, (255, 140, 0))
-
 interface = Interface()
 
 def restart():
@@ -282,11 +266,9 @@ def restart():
         Player1.x = [40, 60, 80]
         Player1.y = [60, 60, 60]
         Player1.last_move = None
-
         Player2.x = [40, 60, 80]
         Player2.y = [100, 100, 100]
         Player2.last_move = None
-
         gamemode_change = False
         reload_var = False
 
@@ -303,14 +285,10 @@ def screen_update():
     interface.score_draw()
     Food1.draw()
     Player1.draw()
-   
-
     if player_add is True:
         Food2.draw()
         Player2.draw()
-
     pygame.display.update()
-
 
 run = True
 while run:
@@ -326,7 +304,6 @@ while run:
         Player2.move()
         Player2.keypress(pygame.K_w, pygame.K_s, pygame.K_d, pygame.K_a)
         Player2.check_end()
-
     Player1.check_end()
     restart()
     screen_update()
