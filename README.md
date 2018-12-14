@@ -3,4 +3,5 @@
 # Use "W","A","S","D" or arrow keys for movement
 # Press "G" for show grid / Press "H" to hide grid
 # Press "O" for solo play / Press "I" for coop
+# Press "R" for restart
 # 1,2,3,4,5 keys changing snake speed (higher = slower)
