@@ -95,8 +95,7 @@ class Snake(object):
                 reload_var = True
 
     def check_end(self): #check snake destroy himself
-        global reload_var
-        global player_add
+        global reload_var, player_add
         for i in range(0, len(self.x)-1):
             if self.x[-1] == self.x[i] and self.y[-1] == self.y[i]:
                 reload_var = True
@@ -125,8 +124,7 @@ class Food(object):
             self.change_location()
 
     def draw(self):
-        global score_player1
-        global score_player2
+        global score_player1, score_player2
         if self.x == Player1.x[-1] and self.y == Player1.y[-1]: #Snake eat food
             score_player1 += 100
             self.change_location()
@@ -211,22 +209,20 @@ class Interface(object):
                 (screen_width, screen_height-2), self.border_with)
 
     def control(self):
-        global grid_show
-        global gamemode_change
-        global player_add
+        global grid_show, gamemode_change, player_add, reload_var
         key = pygame.key.get_pressed()
         if key[pygame.K_g]:
             grid_show = True
         if key[pygame.K_h]:
             grid_show = False
+        if key[pygame.K_r]:
+            reload_var = True
 
         if Player1.last_move == None and Player2.last_move == None:
             if key[pygame.K_n]:
                 gamemode_change = False
             if key[pygame.K_m]:
                 gamemode_change = True
-            if key[pygame.K_r]:
-                reload_var = True
             if key[pygame.K_i]:
                 player_add = True
             if key[pygame.K_o]:
@@ -258,9 +254,7 @@ interface = Interface()
 def restart():
     global reload_var
     if reload_var is True:
-        global gamemode_change
-        global score_player1
-        global score_player2
+        global gamemode_change, score_player2, score_player1
         score_player1 = 0
         score_player2 = 0
         Player1.x = [40, 60, 80]
@@ -273,9 +267,7 @@ def restart():
         reload_var = False
 
 def screen_update():
-    global frame_count
-    global gamemode_change
-    global player_add
+    global frame_count, player_add, gamemode_change
     frame_count += 1
     if frame_count >= 30:
         frame_count = 0
